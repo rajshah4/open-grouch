@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pyproject.toml'  # Only trigger when version might change
+      - 'grouch/**'
+      - 'openhands_cli/**'
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force a release even if version unchanged'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for tags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: latest
+
+      - name: Extract version from pyproject.toml
+        id: version
+        run: |
+          VERSION=$(grep '^version = ' pyproject.toml | head -1 | cut -d'"' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION"
+
+      - name: Check if release already exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release v${{ steps.version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Release v${{ steps.version.outputs.version }} does not exist"
+          fi
+
+      - name: Build package
+        if: steps.check_release.outputs.exists == 'false' || inputs.force_release == 'true'
+        run: |
+          uv build
+          ls -la dist/
+
+      - name: Create GitHub Release
+        if: steps.check_release.outputs.exists == 'false' || inputs.force_release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create tag if it doesn't exist
+          if ! git tag -l | grep -q "^${{ steps.version.outputs.tag }}$"; then
+            git tag ${{ steps.version.outputs.tag }}
+            git push origin ${{ steps.version.outputs.tag }}
+          fi
+          
+          # Create release with wheel attached
+          gh release create ${{ steps.version.outputs.tag }} \
+            --title "Open Grouch ${{ steps.version.outputs.tag }}" \
+            --notes "## 🗑️ Open Grouch ${{ steps.version.outputs.version }}
+
+          *\"I love trash... and helping you with your code, I guess.\"*
+
+          ### Installation
+
+          **Recommended (always gets latest):**
+          \`\`\`bash
+          uv tool install git+https://github.com/${{ github.repository }}.git
+          \`\`\`
+
+          **Specific version:**
+          \`\`\`bash
+          uv tool install git+https://github.com/${{ github.repository }}.git@${{ steps.version.outputs.tag }}
+          \`\`\`
+
+          **From wheel (download from assets below):**
+          \`\`\`bash
+          uv tool install ./open_grouch-${{ steps.version.outputs.version }}-py3-none-any.whl
+          \`\`\`
+
+          ### Usage
+          \`\`\`bash
+          grouch              # Start the grouchy assistant
+          grouch --help       # Get help (if you must)
+          \`\`\`
+
+          ---
+          *Now scram! Unless you actually need something...* 🗑️" \
+            dist/*.whl dist/*.tar.gz
+
+      - name: Summary
+        if: steps.check_release.outputs.exists == 'false' || inputs.force_release == 'true'
+        run: |
+          echo "## 🗑️ Release Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ steps.version.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Install with:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "uv tool install git+https://github.com/${{ github.repository }}.git" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

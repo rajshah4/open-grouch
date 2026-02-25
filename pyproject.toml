@@ -35,8 +35,8 @@ dependencies = [
   "streamingjson>=0.0.2",
 ]
 
-# Entry points - 'grouch' command plus backward-compatible 'openhands'
-scripts = { grouch = "openhands_cli.entrypoint:main", "grouch-acp" = "openhands_cli.acp:main", openhands = "openhands_cli.entrypoint:main", "openhands-acp" = "openhands_cli.acp:main" }
+# Entry points - 'grouch' command only
+scripts = { grouch = "openhands_cli.entrypoint:main", "grouch-acp" = "openhands_cli.acp:main" }
 
 [dependency-groups]
 # Hatchling wheel target: include the package directory

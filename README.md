@@ -33,7 +33,17 @@ Everything from OpenHands CLI, but with:
 Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uv tool install open-grouch --python 3.12
+# Install latest version
+uv tool install git+https://github.com/jpshackelford/open-grouch.git
+
+# Or install a specific version
+uv tool install git+https://github.com/jpshackelford/open-grouch.git@v0.1.0
+```
+
+### Upgrading
+
+```bash
+uv tool upgrade open-grouch
 ```
 
 ### From Source

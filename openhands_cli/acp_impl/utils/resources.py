@@ -35,7 +35,7 @@ RESOURCE_SKILL = Skill(
     trigger=None,
 )
 
-ACP_CACHE_DIR = Path.home() / ".openhands" / "cache" / "acp"
+ACP_CACHE_DIR = Path.home() / ".open-grouch" / "cache" / "acp"
 ACP_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 # LLM API supported image MIME types (Anthropic/Claude compatible)

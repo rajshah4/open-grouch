@@ -5,9 +5,10 @@ def get_persistence_dir() -> str:
     """Get the persistence directory for storing agent settings and CLI configuration.
 
     Can be overridden via OPENHANDS_PERSISTENCE_DIR environment variable.
+    Default is ~/.open-grouch/ to keep Open Grouch config separate from OpenHands CLI.
     """
     return os.environ.get(
-        "OPENHANDS_PERSISTENCE_DIR", os.path.expanduser("~/.openhands")
+        "OPENHANDS_PERSISTENCE_DIR", os.path.expanduser("~/.open-grouch")
     )
 
 

@@ -161,7 +161,7 @@ class TestLaunchGuiServer:
         """Test various GUI server launch scenarios."""
         # Setup mocks
         mock_check_docker.return_value = True
-        mock_config_dir.return_value = Path("/home/user/.openhands")
+        mock_config_dir.return_value = Path("/home/user/.open-grouch")
         mock_version.return_value = "latest"
         mock_check_output.return_value = "1000\n"
         mock_cwd.return_value = Path("/current/dir")

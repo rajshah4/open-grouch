@@ -134,7 +134,7 @@ class LocalOpenHandsACPAgent(BaseOpenHandsACPAgent):
                     "reason": "Invalid MCP configuration file",
                     "details": str(e),
                     "help": (
-                        f"Please check ~/.openhands/{MCP_CONFIG_FILE} for "
+                        f"Please check ~/.open-grouch/{MCP_CONFIG_FILE} for "
                         "JSON syntax errors"
                     ),
                 }
@@ -171,7 +171,7 @@ class LocalOpenHandsACPAgent(BaseOpenHandsACPAgent):
             else:
                 asyncio.run_coroutine_threadsafe(subscriber(event), loop)
 
-        # Load hooks from ~/.openhands/hooks.json or {working_dir}/.openhands/hooks.json
+        # Load hooks from ~/.open-grouch/hooks.json or {work_dir}/.openhands/hooks.json
         hook_config = HookConfig.load(working_dir=str(working_path))
         if not hook_config.is_empty():
             logger.info("Hooks loaded from hooks.json")

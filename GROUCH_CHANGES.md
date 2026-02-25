@@ -43,6 +43,14 @@ open-grouch/
 | `openhands_cli/theme.py` | Import grouch theme | Low | Simple import swap |
 | `openhands_cli/tui/content/splash.py` | Import grouch strings | Low | Banner and welcome messages |
 | `openhands_cli/tui/widgets/status_line.py` | Import grouch strings | Low | Status messages |
+| `openhands_cli/locations.py` | Config directory path | Low | Default to `~/.open-grouch` instead of `~/.openhands` |
+| `openhands_cli/stores/cli_settings.py` | Config directory path | Low | Default to `~/.open-grouch` |
+| `openhands_cli/acp_impl/utils/resources.py` | Cache directory path | Low | Default to `~/.open-grouch/cache/acp` |
+| `openhands_cli/mcp/mcp_commands.py` | User messages | Low | Reference `~/.open-grouch` and `grouch` command |
+| `openhands_cli/tui/panels/mcp_side_panel.py` | User messages | Low | Reference `~/.open-grouch` |
+| `openhands_cli/acp_impl/agent/local_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
+| `openhands_cli/acp_impl/agent/remote_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
+| `openhands_cli/setup.py` | Comment only | Very Low | Reference `~/.open-grouch` in comment |
 
 ### Files to Watch
 

@@ -202,7 +202,7 @@ class OpenHandsCloudACPAgent(BaseOpenHandsACPAgent):
                     "reason": "Invalid MCP configuration file",
                     "details": str(e),
                     "help": (
-                        f"Please check ~/.openhands/{MCP_CONFIG_FILE} for "
+                        f"Please check ~/.open-grouch/{MCP_CONFIG_FILE} for "
                         "JSON syntax errors"
                     ),
                 }
@@ -234,7 +234,7 @@ class OpenHandsCloudACPAgent(BaseOpenHandsACPAgent):
         def sync_callback(event: Event) -> None:
             asyncio.run_coroutine_threadsafe(subscriber(event), loop)
 
-        # Load hooks from ~/.openhands/hooks.json (global hooks for remote)
+        # Load hooks from ~/.open-grouch/hooks.json (global hooks for remote)
         hook_config = HookConfig.load()
         if not hook_config.is_empty():
             logger.info("Hooks loaded from hooks.json")

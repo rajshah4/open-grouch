@@ -16,8 +16,8 @@ class TestDirectorySeparation:
         # get_work_dir() should be the current working directory
         assert get_work_dir() == os.getcwd()
 
-        # get_persistence_dir() should be ~/.openhands
-        expected_config_dir = os.path.expanduser("~/.openhands")
+        # get_persistence_dir() should be ~/.open-grouch
+        expected_config_dir = os.path.expanduser("~/.open-grouch")
         assert get_persistence_dir() == expected_config_dir
 
         # They should be different

@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 # Entry points - 'grouch' command only
-scripts = { grouch = "openhands_cli.entrypoint:main", "grouch-acp" = "openhands_cli.acp:main" }
+scripts = { grouch = "openhands_cli.entrypoint:main", "grouch-acp" = "openhands_cli.acp_cli:main" }
 
 [dependency-groups]
 # Hatchling wheel target: include the package directory

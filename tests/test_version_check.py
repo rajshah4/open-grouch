@@ -3,7 +3,6 @@
 import json
 import unittest.mock as mock
 
-from openhands_cli import __version__
 from openhands_cli.version_check import VersionInfo, check_for_updates, parse_version
 
 
@@ -47,11 +46,14 @@ class TestCheckForUpdates:
         with mock.patch(
             "urllib.request.urlopen", side_effect=Exception("Network error")
         ):
-            result = check_for_updates()
-            assert result.current_version == __version__
-            assert result.latest_version is None
-            assert result.needs_update is False
-            assert result.error is not None
+            # Must also patch __version__ to a non-dev version, otherwise
+            # check_for_updates returns early without making network calls
+            with mock.patch("openhands_cli.version_check.__version__", "1.0.0"):
+                result = check_for_updates()
+                assert result.current_version == "1.0.0"
+                assert result.latest_version is None
+                assert result.needs_update is False
+                assert result.error is not None
 
     def test_update_available(self):
         """Test detection of available updates."""
@@ -116,10 +118,15 @@ class TestCheckForUpdates:
         with mock.patch(
             "urllib.request.urlopen", return_value=mock_response
         ) as mock_urlopen:
-            check_for_updates(timeout=5.0)
-            # Verify that urlopen was called with the timeout parameter
-            args, kwargs = mock_urlopen.call_args
-            assert kwargs.get("timeout") == 5.0 or (len(args) > 1 and args[1] == 5.0)
+            # Must also patch __version__ to a non-dev version, otherwise
+            # check_for_updates returns early without making network calls
+            with mock.patch("openhands_cli.version_check.__version__", "1.0.0"):
+                check_for_updates(timeout=5.0)
+                # Verify that urlopen was called with the timeout parameter
+                args, kwargs = mock_urlopen.call_args
+                assert kwargs.get("timeout") == 5.0 or (
+                    len(args) > 1 and args[1] == 5.0
+                )
 
     def test_version_info_structure(self):
         """Test VersionInfo named tuple structure."""

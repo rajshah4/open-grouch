@@ -152,7 +152,7 @@ def mock_locations(tmp_path_factory, monkeypatch) -> MockLocations:
     import os.path
 
     home_dir = tmp_path_factory.mktemp("home")
-    persistence_dir = home_dir / ".openhands"
+    persistence_dir = home_dir / ".open-grouch"
     persistence_dir.mkdir(exist_ok=True)
     conversations_dir = persistence_dir / "conversations"
     conversations_dir.mkdir(exist_ok=True)

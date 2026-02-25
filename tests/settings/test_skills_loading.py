@@ -91,7 +91,7 @@ class TestSkillsLoading:
         are properly loaded and combined.
         """
         # Create user skills in mock_locations.home_dir
-        user_skills_temp = mock_locations.home_dir / ".openhands" / "skills"
+        user_skills_temp = mock_locations.home_dir / ".open-grouch" / "skills"
         user_skills_temp.mkdir(parents=True)
 
         # Create user skill files

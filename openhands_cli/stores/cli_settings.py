@@ -56,9 +56,9 @@ class CliSettings(BaseModel):
     @classmethod
     def get_config_path(cls) -> Path:
         """Get the path to the CLI configuration file."""
-        # Use environment variable if set, otherwise use default
+        # Use environment variable if set, otherwise use Open Grouch's default
         persistence_dir = os.environ.get(
-            "PERSISTENCE_DIR", os.path.expanduser("~/.openhands")
+            "PERSISTENCE_DIR", os.path.expanduser("~/.open-grouch")
         )
         return Path(persistence_dir) / "cli_config.json"
 

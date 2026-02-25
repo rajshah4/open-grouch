@@ -36,6 +36,30 @@ git push origin sync/upstream-$(date +%Y%m%d)
 # Create PR for review
 ```
 
+### Creating a Release
+Releases are triggered by pushing a version tag:
+
+```bash
+# 1. Update version in pyproject.toml
+#    version = "0.2.0"
+
+# 2. Commit the version bump
+git add pyproject.toml
+git commit -m "[grouch] Bump version to 0.2.0"
+git push origin main
+
+# 3. Create and push the tag
+git tag v0.2.0
+git push origin v0.2.0
+# → This triggers the release workflow
+```
+
+The release workflow will:
+- Verify tag matches pyproject.toml version
+- Build the wheel
+- Create GitHub Release with auto-generated changelog
+- Attach wheel for download
+
 ## Project Structure & Module Organization
 
 ### Grouch-Specific (OUR CODE)

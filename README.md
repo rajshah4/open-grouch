@@ -116,35 +116,36 @@ Open Grouch tracks [OpenHands/OpenHands-CLI](https://github.com/OpenHands/OpenHa
 
 See [GROUCH_CHANGES.md](./GROUCH_CHANGES.md) for details on what we've modified.
 
+## Contributing
+
+We use **conventional commits** and **automatic releases**:
+
+```bash
+# PR titles must follow this format:
+grouch: add grumpy welcome message    # Personality changes
+feat: add new feature                  # → triggers minor release
+fix: correct bug                       # → triggers patch release
+```
+
+When PRs merge to main, [release-please](https://github.com/googleapis/release-please) automatically:
+1. Creates a Release PR with version bump + changelog
+2. When merged → publishes GitHub Release with wheel
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for details, or [AGENTS.md](./AGENTS.md) for the full guide.
+
 ## Development
 
 ```bash
 # Clone and setup
 git clone https://github.com/jpshackelford/open-grouch.git
 cd open-grouch
-uv sync
+make install-dev
 
 # Run tests
-uv run pytest
+make test
 
 # Run the TUI in dev mode
-uv run textual run --dev openhands_cli.tui.textual_app:OpenHandsApp
-```
-
-### Syncing with Upstream
-
-```bash
-# Fetch upstream changes
-git fetch upstream
-
-# Create a sync branch
-git checkout -b sync/upstream-$(date +%Y%m%d)
-
-# Merge upstream
-git merge upstream/main
-
-# Resolve conflicts (keep our personality, take their features)
-# Then push and create PR
+uv run grouch
 ```
 
 ## License

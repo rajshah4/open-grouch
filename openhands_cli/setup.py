@@ -127,7 +127,7 @@ def setup_conversation(
     # Prepare callbacks list
     callbacks = [event_callback] if event_callback else None
 
-    # Load hooks from ~/.openhands/hooks.json or {working_dir}/.openhands/hooks.json
+    # Load hooks from ~/.open-grouch/hooks.json or {working_dir}/.openhands/hooks.json
     hook_config = HookConfig.load(working_dir=get_work_dir())
     if not hook_config.is_empty():
         console.print("✓ Hooks loaded", style="green")

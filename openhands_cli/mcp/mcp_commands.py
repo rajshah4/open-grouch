@@ -87,8 +87,8 @@ def handle_mcp_list(_args: argparse.Namespace) -> None:
         if not servers:
             console.print("No MCP servers configured", style=OPENHANDS_THEME.warning)
             console.print(
-                "Use [bold]openhands mcp add[/bold] to add a server, "
-                "or create [bold]~/.openhands/mcp.json[/bold] manually",
+                "Use [bold]grouch mcp add[/bold] to add a server, "
+                "or create [bold]~/.open-grouch/mcp.json[/bold] manually",
                 style=OPENHANDS_THEME.accent,
             )
             return

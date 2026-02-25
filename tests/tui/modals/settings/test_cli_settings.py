@@ -120,11 +120,11 @@ class TestCliSettings:
 
         with patch.dict(os.environ, env, clear=True):
             with patch(
-                "os.path.expanduser", return_value="/home/user/.openhands"
+                "os.path.expanduser", return_value="/home/user/.open-grouch"
             ) as ex:
                 path = CliSettings.get_config_path()
-                assert path == Path("/home/user/.openhands/cli_config.json")
-                ex.assert_called_once_with("~/.openhands")
+                assert path == Path("/home/user/.open-grouch/cli_config.json")
+                ex.assert_called_once_with("~/.open-grouch")
 
     def test_load_returns_defaults_when_file_missing(self, tmp_path: Path):
         config_path = tmp_path / "cli_config.json"

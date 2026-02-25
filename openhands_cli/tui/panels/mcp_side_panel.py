@@ -120,7 +120,7 @@ class MCPSidePanel(VerticalScroll):
                 f"[{OPENHANDS_THEME.warning}]Config file not found"
                 f"[/{OPENHANDS_THEME.warning}]"
             )
-            content_parts.append(f"Create: ~/.openhands/{MCP_CONFIG_FILE}")
+            content_parts.append(f"Create: ~/.open-grouch/{MCP_CONFIG_FILE}")
         elif not status["valid"]:
             content_parts.append(
                 f"[{OPENHANDS_THEME.error}]Invalid config file"

@@ -1,0 +1,17 @@
+# Open Grouch merge strategy
+# These settings help manage merges with upstream OpenHands-CLI
+
+# Always keep our version of these files during merges
+README.md merge=ours
+GROUCH_CHANGES.md merge=ours
+grouch/** merge=ours
+
+# Package metadata - keep ours but review carefully
+pyproject.toml merge=ours
+
+# Always take upstream for lock files
+uv.lock merge=theirs
+
+# Linguist language detection
+*.py linguist-language=Python
+*.tcss linguist-language=CSS

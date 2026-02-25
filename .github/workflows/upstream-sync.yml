@@ -1,0 +1,159 @@
+name: Sync with Upstream OpenHands-CLI
+
+on:
+  schedule:
+    # Check for updates every Sunday at midnight UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Force sync even if no new commits detected'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  check-and-sync:
+    runs-on: ubuntu-latest
+    outputs:
+      has_updates: ${{ steps.check.outputs.has_updates }}
+      upstream_sha: ${{ steps.check.outputs.upstream_sha }}
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/OpenHands/OpenHands-CLI.git || true
+          git fetch upstream
+
+      - name: Check for new upstream commits
+        id: check
+        run: |
+          UPSTREAM_SHA=$(git rev-parse upstream/main)
+          echo "upstream_sha=${UPSTREAM_SHA:0:12}" >> $GITHUB_OUTPUT
+          
+          # Check if we've already synced this commit
+          if git log --oneline | grep -q "Sync upstream.*${UPSTREAM_SHA:0:7}"; then
+            echo "Already synced to $UPSTREAM_SHA"
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          else
+            echo "New upstream commits available: $UPSTREAM_SHA"
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          fi
+          
+          # Override if force sync requested
+          if [[ "${{ inputs.force_sync }}" == "true" ]]; then
+            echo "Force sync requested"
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create sync branch
+        if: steps.check.outputs.has_updates == 'true'
+        id: create_branch
+        run: |
+          BRANCH="sync/upstream-$(date +%Y%m%d-%H%M)"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          
+          git checkout -b $BRANCH
+          
+          # Attempt the merge
+          if git merge upstream/main --no-edit -m "Sync upstream at ${{ steps.check.outputs.upstream_sha }}
+
+          Merging latest changes from OpenHands/OpenHands-CLI.
+          
+          Upstream commit: https://github.com/OpenHands/OpenHands-CLI/commit/${{ steps.check.outputs.upstream_sha }}"; then
+            echo "merge_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "merge_status=conflict" >> $GITHUB_OUTPUT
+            # Abort the merge to leave clean state
+            git merge --abort
+          fi
+
+      - name: Push branch and create PR (success case)
+        if: steps.check.outputs.has_updates == 'true' && steps.create_branch.outputs.merge_status == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin ${{ steps.create_branch.outputs.branch }}
+          
+          gh pr create \
+            --title "⬆️ Sync with upstream OpenHands-CLI (${{ steps.check.outputs.upstream_sha }})" \
+            --body "## Automated Upstream Sync
+          
+          This PR merges the latest changes from [OpenHands/OpenHands-CLI](https://github.com/OpenHands/OpenHands-CLI).
+          
+          **Upstream commit:** \`${{ steps.check.outputs.upstream_sha }}\`
+          
+          ### Review Checklist
+          - [ ] Check for conflicts with Grouch personality changes
+          - [ ] Verify \`grouch/strings.py\` imports still work
+          - [ ] Run tests to ensure nothing broke
+          - [ ] Update \`GROUCH_CHANGES.md\` if new files need modification
+          
+          ---
+          *This PR was automatically created by the upstream-sync workflow.*" \
+            --base main \
+            --head ${{ steps.create_branch.outputs.branch }} \
+            --label "upstream-sync"
+
+      - name: Create issue for conflicts
+        if: steps.check.outputs.has_updates == 'true' && steps.create_branch.outputs.merge_status == 'conflict'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if similar issue already exists
+          EXISTING=$(gh issue list --state open --label "upstream-sync" --json number --jq 'length')
+          
+          if [[ "$EXISTING" == "0" ]]; then
+            gh issue create \
+              --title "⚠️ Manual merge required: upstream sync has conflicts" \
+              --body "## Upstream Sync Conflict
+          
+          The automated sync with [OpenHands/OpenHands-CLI](https://github.com/OpenHands/OpenHands-CLI) encountered merge conflicts.
+          
+          **Upstream commit:** \`${{ steps.check.outputs.upstream_sha }}\`
+          
+          ### Manual Resolution Steps
+          
+          \`\`\`bash
+          # Fetch upstream
+          git fetch upstream
+          
+          # Create sync branch
+          git checkout -b sync/upstream-manual
+          
+          # Attempt merge and resolve conflicts
+          git merge upstream/main
+          
+          # For each conflict:
+          # 1. Keep upstream's functional changes
+          # 2. Preserve our grouch/ imports and personality changes
+          # 3. Update GROUCH_CHANGES.md if needed
+          
+          # After resolving
+          git add .
+          git commit -m 'Sync upstream at ${{ steps.check.outputs.upstream_sha }} (manual merge)'
+          git push origin sync/upstream-manual
+          \`\`\`
+          
+          ---
+          *This issue was automatically created by the upstream-sync workflow.*" \
+              --label "upstream-sync"
+          else
+            echo "Issue already exists for upstream sync conflicts"
+          fi

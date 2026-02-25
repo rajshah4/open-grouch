@@ -1,17 +1,47 @@
 name: Release
 
-# Trigger on version tags (v0.1.0, v1.0.0, etc.)
 on:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      - 'v[0-9]+.[0-9]+.[0-9]+-*'  # Also match pre-release tags like v0.1.0-beta
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  release:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: python
+          package-name: open-grouch
+          # Include our grouch prefix in changelog
+          changelog-types: >
+            [
+              {"type": "feat", "section": "✨ Features", "hidden": false},
+              {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
+              {"type": "grouch", "section": "🗑️ Grouch Personality", "hidden": false},
+              {"type": "chore", "section": "🧹 Maintenance", "hidden": false},
+              {"type": "docs", "section": "📚 Documentation", "hidden": false},
+              {"type": "style", "section": "💅 Styles", "hidden": false},
+              {"type": "refactor", "section": "♻️ Refactoring", "hidden": false},
+              {"type": "perf", "section": "⚡ Performance", "hidden": false},
+              {"type": "test", "section": "🧪 Tests", "hidden": false},
+              {"type": "ci", "section": "🔧 CI/CD", "hidden": false},
+              {"type": "sync", "section": "🔄 Upstream Sync", "hidden": false}
+            ]
+
+  build-and-upload:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,49 +57,24 @@ jobs:
         with:
           version: latest
 
-      - name: Extract version from tag
-        id: version
-        run: |
-          # Get version from tag (strip 'v' prefix)
-          TAG="${GITHUB_REF#refs/tags/}"
-          VERSION="${TAG#v}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Tag: $TAG, Version: $VERSION"
-
-      - name: Verify version matches pyproject.toml
-        run: |
-          TOML_VERSION=$(grep '^version = ' pyproject.toml | head -1 | cut -d'"' -f2)
-          if [ "$TOML_VERSION" != "${{ steps.version.outputs.version }}" ]; then
-            echo "::error::Tag version (${{ steps.version.outputs.version }}) does not match pyproject.toml version ($TOML_VERSION)"
-            echo "Please update pyproject.toml before tagging."
-            exit 1
-          fi
-          echo "✅ Version match confirmed: $TOML_VERSION"
-
       - name: Build package
         run: |
           uv build
           ls -la dist/
 
-      - name: Create GitHub Release
+      - name: Upload wheel to release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ steps.version.outputs.tag }} \
-            --title "🗑️ Open Grouch ${{ steps.version.outputs.tag }}" \
-            --generate-notes \
-            --notes-start-tag "$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')" \
-            dist/*.whl dist/*.tar.gz
+          gh release upload ${{ needs.release-please.outputs.tag_name }} dist/*.whl dist/*.tar.gz
 
       - name: Add installation instructions to release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Get auto-generated notes and append our instructions
-          CURRENT_BODY=$(gh release view ${{ steps.version.outputs.tag }} --json body -q '.body')
+          CURRENT_BODY=$(gh release view ${{ needs.release-please.outputs.tag_name }} --json body -q '.body')
           
-          gh release edit ${{ steps.version.outputs.tag }} --notes "${CURRENT_BODY}
+          gh release edit ${{ needs.release-please.outputs.tag_name }} --notes "${CURRENT_BODY}
 
           ---
 
@@ -82,13 +87,13 @@ jobs:
 
           **Install this specific version:**
           \`\`\`bash
-          uv tool install git+https://github.com/${{ github.repository }}.git@${{ steps.version.outputs.tag }}
+          uv tool install git+https://github.com/${{ github.repository }}.git@${{ needs.release-please.outputs.tag_name }}
           \`\`\`
 
           **From wheel:**
           \`\`\`bash
           # Download the .whl file from Assets below, then:
-          uv tool install ./open_grouch-${{ steps.version.outputs.version }}-py3-none-any.whl
+          uv tool install ./open_grouch-${{ needs.release-please.outputs.version }}-py3-none-any.whl
           \`\`\`
 
           ## Usage
@@ -102,11 +107,11 @@ jobs:
 
       - name: Summary
         run: |
-          echo "## 🗑️ Release ${{ steps.version.outputs.tag }} Created!" >> $GITHUB_STEP_SUMMARY
+          echo "## 🗑️ Release ${{ needs.release-please.outputs.tag_name }} Published!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.release-please.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Install with:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "uv tool install git+https://github.com/${{ github.repository }}.git@${{ steps.version.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "uv tool install git+https://github.com/${{ github.repository }}.git" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

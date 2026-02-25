@@ -36,29 +36,18 @@ git push origin sync/upstream-$(date +%Y%m%d)
 # Create PR for review
 ```
 
-### Creating a Release
-Releases are triggered by pushing a version tag:
+### Automatic Releases (via release-please)
+Releases are **automatic** when PRs merge to main:
 
-```bash
-# 1. Update version in pyproject.toml
-#    version = "0.2.0"
+1. Use conventional commit format in PR titles
+2. Merge PR to main
+3. release-please creates/updates a "Release PR" with version bump + changelog
+4. When Release PR is merged → GitHub Release is created with wheel
 
-# 2. Commit the version bump
-git add pyproject.toml
-git commit -m "[grouch] Bump version to 0.2.0"
-git push origin main
-
-# 3. Create and push the tag
-git tag v0.2.0
-git push origin v0.2.0
-# → This triggers the release workflow
-```
-
-The release workflow will:
-- Verify tag matches pyproject.toml version
-- Build the wheel
-- Create GitHub Release with auto-generated changelog
-- Attach wheel for download
+**No manual version bumps needed!** Version is determined by commit types:
+- `fix:` → patch bump (0.1.0 → 0.1.1)
+- `feat:` → minor bump (0.1.0 → 0.2.0)
+- `feat!:` or `BREAKING CHANGE:` → major bump (0.1.0 → 1.0.0)
 
 ## Project Structure & Module Organization
 
@@ -228,16 +217,39 @@ To view the generated SVG snapshots in a browser:
 
 ## Commit & Pull Request Guidelines
 
-### Commit Message Format
-Use the `[grouch]` prefix for personality changes to distinguish from upstream merges:
+### Conventional Commits (Required)
+All PR titles **must** follow [Conventional Commits](https://www.conventionalcommits.org/) format:
 
 ```
-[grouch] Add grumpy welcome messages to splash screen
-[grouch] Update theme to trash can green
-sync: Merge upstream at abc1234
+<type>[optional scope]: <description>
+
+Examples:
+  feat: add grouchy welcome banner
+  fix(tui): correct splash screen alignment  
+  grouch: update Oscar personality strings
+  sync: merge upstream OpenHands-CLI changes
+  docs: update installation instructions
+  ci: add conventional commit linting
 ```
 
-For upstream code fixes (rare), use: `<scope>: <message>`
+**Types that trigger releases:**
+| Type | Version Bump | Description |
+|------|--------------|-------------|
+| `feat` | Minor (0.1.0 → 0.2.0) | New feature |
+| `fix` | Patch (0.1.0 → 0.1.1) | Bug fix |
+| `feat!` | Major (0.1.0 → 1.0.0) | Breaking change |
+
+**Other types (no release):**
+| Type | Description |
+|------|-------------|
+| `grouch` | Personality/theme changes |
+| `sync` | Upstream sync |
+| `docs` | Documentation |
+| `style` | Formatting |
+| `refactor` | Code refactoring |
+| `test` | Tests |
+| `ci` | CI/CD changes |
+| `chore` | Maintenance |
 
 ### PR Types
 

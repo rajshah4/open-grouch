@@ -39,8 +39,8 @@ def acp_test_env(tmp_path):
 @pytest.fixture
 def acp_executable():
     """Get path to the ACP executable for testing."""
-    # Use `uv run openhands acp` for testing
-    return ["uv", "run", "openhands", "acp"]
+    # Use `uv run grouch-acp` for testing (open-grouch's ACP command)
+    return ["uv", "run", "grouch-acp"]
 
 
 def send_jsonrpc_message(proc: subprocess.Popen, message: dict) -> dict | None:

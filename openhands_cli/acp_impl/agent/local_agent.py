@@ -171,7 +171,7 @@ class LocalOpenHandsACPAgent(BaseOpenHandsACPAgent):
             else:
                 asyncio.run_coroutine_threadsafe(subscriber(event), loop)
 
-        # Load hooks from ~/.open-grouch/hooks.json or {working_dir}/.openhands/hooks.json
+        # Load hooks from ~/.open-grouch/hooks.json or {work_dir}/.openhands/hooks.json
         hook_config = HookConfig.load(working_dir=str(working_path))
         if not hook_config.is_empty():
             logger.info("Hooks loaded from hooks.json")

@@ -134,7 +134,7 @@ CONFIRM_EXIT = "Leaving already? ...Not that I'll miss you or anything."
 
 
 # =============================================================================
-# Update & Version Messages  
+# Update & Version Messages
 # =============================================================================
 
 UPDATE_AVAILABLE = "⚠ There's an update. Not that you care about improvements."
@@ -154,6 +154,7 @@ The critic will judge your work. Don't worry, I judge everything.
 # =============================================================================
 # Helper Functions
 # =============================================================================
+
 
 def get_random_welcome() -> str:
     """Get a random welcome message."""
@@ -182,10 +183,10 @@ def get_random_thinking() -> str:
 
 def grouchify(message: str) -> str:
     """Add some grouch flavor to any message.
-    
+
     Args:
         message: The original message
-        
+
     Returns:
         Message with occasional grumbles added
     """

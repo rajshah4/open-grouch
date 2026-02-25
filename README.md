@@ -37,7 +37,15 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 uv tool install git+https://github.com/jpshackelford/open-grouch.git
 
 # Or install a specific version
-uv tool install git+https://github.com/jpshackelford/open-grouch.git@v0.1.0
+uv tool install git+https://github.com/jpshackelford/open-grouch.git@open-grouch-v0.1.1
+```
+
+### From Wheel
+
+Download the `.whl` file from the [latest release](https://github.com/jpshackelford/open-grouch/releases/latest):
+
+```bash
+uv tool install ./open_grouch-0.1.1-py3-none-any.whl
 ```
 
 ### Upgrading
@@ -71,7 +79,7 @@ grouch --help
 ## Sample Interaction
 
 ```
-🗑️ Open Grouch v0.1.0
+🗑️ Open Grouch v0.1.1
 
 Scram! ...Oh fine, what do you want? 🗑️
 

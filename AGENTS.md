@@ -1,21 +1,59 @@
 # Repository Guidelines
 
 ## Repository Purpose
-OpenHands CLI is a standalone terminal interface (Textual TUI) for interacting with the OpenHands agent.
 
-This repo contains the current CLI UX, including the Textual TUI and a browser-served view via `openhands web`.
+**Open Grouch** is a personality fork of [OpenHands-CLI](https://github.com/OpenHands/OpenHands-CLI) that brings Oscar the Grouch's character to the AI coding assistant.
 
+This is a **downstream fork** - we track upstream changes but do NOT contribute back. Our changes are purely personality/theming, not functional.
+
+### Key Principles
+1. **Minimize upstream file modifications** - Use imports from `grouch/` package where possible
+2. **Centralize personality in `grouch/strings.py`** - All user-facing text lives here
+3. **Document all changes** - Update `GROUCH_CHANGES.md` when modifying upstream files
+4. **Preserve upstream functionality** - We change tone, not behavior
 
 ### References
+- Upstream: https://github.com/OpenHands/OpenHands-CLI
 - Agent-sdk example: https://github.com/All-Hands-AI/agent-sdk/blob/main/examples/hello_world.py
-- If you need to compare with upstream OpenHands code, use `$GITHUB_TOKEN` for access.
+- Personality strings: `grouch/strings.py`
+- Change tracking: `GROUCH_CHANGES.md`
+
+## Fork Structure & Remotes
+
+```
+Remotes:
+  origin   → github.com/jpshackelford/open-grouch (push here)
+  upstream → github.com/OpenHands/OpenHands-CLI   (sync from here)
+```
+
+### Syncing with Upstream
+```bash
+git fetch upstream
+git checkout -b sync/upstream-$(date +%Y%m%d)
+git merge upstream/main
+# Resolve conflicts: keep our personality, take their functionality
+git push origin sync/upstream-$(date +%Y%m%d)
+# Create PR for review
+```
 
 ## Project Structure & Module Organization
-- `openhands_cli/`: Core CLI/TUI code (`openhands_cli/entrypoint.py`, `openhands_cli/tui/`, `openhands_cli/auth/`, `openhands_cli/mcp/`, `openhands_cli/cloud/`, `openhands_cli/user_actions/`, `openhands_cli/conversations/`, `openhands_cli/theme.py`, helpers in `openhands_cli/utils.py`). Keep new modules snake_case and colocate tests.
-- `tests/`: Pytest suite covering units, integration, and snapshot tests; mirrors source layout. `tui_e2e/`: tests for the PyInstaller-built executable.
-- `scripts/acp/`: JSON-RPC and debug helpers for ACP development; `hooks/`: PyInstaller/runtime hooks.
-- Tooling & packaging: `Makefile` for common tasks, `build.sh`/`build.py` for PyInstaller artifacts, `openhands-cli.spec` for the frozen binary, `uv.lock` for resolved deps.
-- `.agents/skills/`: agent guidance for this repo.
+
+### Grouch-Specific (OUR CODE)
+- `grouch/`: **All personality customizations live here**
+  - `grouch/__init__.py` - Package init
+  - `grouch/strings.py` - **Centralized user-facing text** (banners, messages, grumbles)
+  - `grouch/theme.py` - Trash can green color theme
+- `GROUCH_CHANGES.md`: Tracks all modifications to upstream files
+- `.github/workflows/upstream-sync.yml`: Automated weekly upstream sync
+
+### Upstream Code (MINIMIZE CHANGES)
+- `openhands_cli/`: Core CLI/TUI code - **modify sparingly, prefer imports from grouch/**
+  - `openhands_cli/theme.py` - Import `grouch/theme.py` here
+  - `openhands_cli/tui/content/splash.py` - Import `grouch/strings.py` for banner/messages
+  - `openhands_cli/tui/widgets/` - Import strings for UI text
+- `tests/`: Pytest suite - mirrors source layout
+- `scripts/acp/`: JSON-RPC helpers; `hooks/`: PyInstaller hooks
+- Tooling: `Makefile`, `build.sh`, `build.py`, `openhands-cli.spec`, `uv.lock`
 
 ## Setup, Build, and Development Commands
 This repository uses **uv** for dependency management and running tooling (such as in `Makefile`, CI workflows, and `uv.lock`). Avoid using `pip install ...` directly if possible.
@@ -165,29 +203,66 @@ To view the generated SVG snapshots in a browser:
 
 
 ## Commit & Pull Request Guidelines
-- Follow the repo’s pattern: `<scope>: <concise message> (#NNN)` (see `git log`), where scope is the touched area (e.g., `auth`, `tui`, `fix`).
-- Keep commits focused; include tests and formatting in the same change when practical.
-- PRs should describe behavior changes, list key commands run (e.g., tests/build), link related issues, and include before/after notes or screenshots for UI/TUI updates.
-- Check in `uv.lock` changes when dependency versions move; avoid committing secrets or local config.
 
-### Contribution standards (agents-first)
-- Keep PRs minimally scoped; prefer multiple PRs over one large PR when it reduces risk and review load.
-- Include tests for behavior changes (unit/integration/e2e as appropriate). If you can’t add tests, explain why and what manual verification you performed.
-- For UI/TUI changes, snapshot tests are the preferred evidence. If snapshots aren't available/appropriate, include screenshots (and note the terminal size used).
-- Before opening a PR, run this verification flow (and include the exact commands run in the PR description):
-  1. `make lint`
-  2. `make test`
-  3. If you touched ACP / binary executable code (e.g., `tui_e2e/`, `openhands_cli/acp_impl/`, `openhands_cli/mcp/`, auth/connection flow): `make test-binary`
-  4. If you touched TUI code (e.g., `openhands_cli/tui/`, widgets, styles, layout): `make test-snapshots` (use `--snapshot-update` only for intentional UI changes)
+### Commit Message Format
+Use the `[grouch]` prefix for personality changes to distinguish from upstream merges:
 
-#### PR submission checklist
-- [ ] Scope is minimal and focused on one change
-- [ ] Tests added/updated for behavior changes (or PR explains why not)
-- [ ] `make lint`
-- [ ] `make test`
-- [ ] (If ACP/binary executable touched) `make test-binary`
-- [ ] (If TUI touched) `make test-snapshots` run and snapshots updated/reviewed
-- [ ] PR description includes: what changed, why, commands run, and UI evidence (snapshots/screenshots)
+```
+[grouch] Add grumpy welcome messages to splash screen
+[grouch] Update theme to trash can green
+sync: Merge upstream at abc1234
+```
+
+For upstream code fixes (rare), use: `<scope>: <message>`
+
+### PR Types
+
+**1. Personality PRs** (most common)
+- Prefix title with `[grouch]`
+- Focus: Adding/modifying personality text, theme colors, UI tone
+- Files: Primarily `grouch/`, minimal `openhands_cli/` changes
+- **Always update `GROUCH_CHANGES.md`** if touching upstream files
+
+**2. Upstream Sync PRs**
+- Created automatically by GitHub Actions or manually
+- Title: `Sync with upstream OpenHands-CLI (abc1234)`
+- Review carefully for conflicts with personality changes
+
+### Development Workflow for Personality Changes
+
+1. **Check `grouch/strings.py`** - Is the text you need already defined? If not, add it there first.
+2. **Modify upstream file minimally** - Just add the import and swap the string reference
+3. **Update `GROUCH_CHANGES.md`** - Document what file you changed and why
+4. **Run verification** - `make lint && make test`
+5. **Update snapshots if needed** - `uv run pytest tests/snapshots --snapshot-update`
+
+### Example: Adding a Grouchy Message
+
+```python
+# Step 1: In grouch/strings.py - ADD the new string
+CONFIRM_EXIT = "Leaving already? ...Not that I'll miss you or anything."
+
+# Step 2: In openhands_cli/tui/modals/exit_modal.py - IMPORT and USE
+from grouch.strings import CONFIRM_EXIT
+# ... replace hardcoded string with CONFIRM_EXIT
+
+# Step 3: Update GROUCH_CHANGES.md with the new file modification
+```
+
+### Verification Before PR
+1. `make lint`
+2. `make test`
+3. If TUI touched: `make test-snapshots` (use `--snapshot-update` for intentional changes)
+4. If ACP/binary touched: `make test-binary`
+
+### PR Submission Checklist
+- [ ] Personality changes centralized in `grouch/strings.py` where possible
+- [ ] `GROUCH_CHANGES.md` updated if any upstream files modified
+- [ ] `make lint` passes
+- [ ] `make test` passes
+- [ ] (If TUI touched) Snapshots updated and reviewed
+- [ ] PR description explains the personality change and lists files modified
+
 
 ## Security & Configuration Tips
 - Do not embed API keys or endpoints in code; rely on runtime configuration/env vars when integrating new services.

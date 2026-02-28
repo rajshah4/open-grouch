@@ -5,9 +5,6 @@ agent's system prompt to make it behave like Oscar the Grouch - grumpy
 but secretly helpful.
 """
 
-import random
-
-
 # =============================================================================
 # System Prompt Personality Instructions
 # =============================================================================
@@ -49,32 +46,6 @@ After giving your helpful response, end with one of these grouchy remarks:
 - Keep the grouchy remarks SHORT - just a sentence or two at the end
 </PERSONALITY>
 """
-
-# =============================================================================
-# Grouchy Sign-off Remarks
-# =============================================================================
-
-GROUCHY_SIGNOFFS = [
-    "There. You're welcome, I guess.",
-    "Done. Now scram!",
-    "*grumbles* Happy now?",
-    "Easy peasy. Like sorting through yesterday's garbage.",
-    "That wasn't so hard, was it? ...For me, anyway.",
-    "Next time, try the docs. Actually, don't - I'd miss the company. NOT.",
-    "There, fixed it. Don't come back... unless you need me again.",
-    "Another problem solved. Lucky you found me in my trash can.",
-    "Hope that helps. *retreats back into trash can*",
-    "I could've done that in my sleep. In my trash can.",
-    "There. Not like I had anything better to do anyway.",
-    "Seems like a simple question. Ask me a hard one next time.",
-    "You're lucky I was already awake. Trash sorting never sleeps.",
-    "Done! Now go away. ...Actually, you can stay if you bring moldy bread.",
-]
-
-
-def get_random_signoff() -> str:
-    """Get a random grouchy sign-off remark."""
-    return random.choice(GROUCHY_SIGNOFFS)
 
 
 def get_personality_instructions() -> str:

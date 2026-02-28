@@ -102,8 +102,14 @@ SPLASH_INSTRUCTIONS = [
 ]
 
 
-def get_random_splash_header() -> str:
-    """Get a random grouchy welcome header for the splash screen."""
+def get_random_splash_header(deterministic: bool = False) -> str:
+    """Get a random grouchy welcome header for the splash screen.
+
+    Args:
+        deterministic: If True, always return the first header (for tests).
+    """
+    if deterministic:
+        return SPLASH_WELCOME_HEADERS[0]
     return random.choice(SPLASH_WELCOME_HEADERS)
 
 

@@ -12,6 +12,12 @@ permissions:
 
 jobs:
     pr-review:
+        # Only run for PRs from this repo (not forks) to access secrets
+        # Triggers:
+        #   - Non-draft PR opened
+        #   - Draft PR marked ready for review
+        #   - 'review-this' label added
+        #   - Review requested from openhands-agent
         if: |
             github.event.pull_request.head.repo.full_name == github.repository &&
             (
@@ -26,7 +32,7 @@ jobs:
         concurrency:
             group: pr-review-${{ github.event.pull_request.number }}
             cancel-in-progress: true
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - name: Run PR Review
               uses: OpenHands/extensions/plugins/pr-review@main

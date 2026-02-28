@@ -50,6 +50,43 @@ We use **release-please** for automatic releases:
 
 **You don't need to bump versions manually!**
 
+## Code Review Process
+
+We use **automated AI code reviews** powered by [OpenHands](https://github.com/All-Hands-AI/OpenHands). When you open a PR, an AI reviewer will analyze your code and provide feedback.
+
+### When Reviews Happen
+
+Reviews are automatically triggered when:
+- A non-draft PR is **opened**
+- A draft PR is marked **ready for review**
+- You add the **`review-this`** label to a PR
+- You request a review from **`@openhands-agent`**
+
+### Review Style: "Roasted" 🔥
+
+Our reviews use the "roasted" style - think Linus Torvalds giving feedback. Expect:
+- Direct, no-nonsense commentary
+- Focus on **data structures and design** over style nitpicks
+- Emphasis on **simplicity and pragmatism**
+- Real bugs and issues prioritized over minor suggestions
+
+Don't take it personally - the brutal honesty helps catch real problems!
+
+### Responding to Reviews
+
+- **🔴 Critical** - Must fix before merge (security issues, bugs)
+- **🟠 Important** - Should fix (logic errors, missing error handling)
+- **🟡 Suggestion** - Worth considering (clarity improvements)
+- **🟢 Nit** - Optional (minor style preferences)
+
+You can use GitHub's "suggestion" feature to apply fixes with one click when the reviewer provides code suggestions.
+
+### Manual Review Request
+
+If you want another review after making changes:
+1. Add the `review-this` label, or
+2. Request a review from `@openhands-agent`
+
 ## Full Documentation
 
 For detailed guidelines on:

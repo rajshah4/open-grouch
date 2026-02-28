@@ -303,6 +303,22 @@ from grouch.strings import CONFIRM_EXIT
 - [ ] (If TUI touched) Snapshots updated and reviewed
 - [ ] PR description explains the personality change and lists files modified
 
+### Automated PR Review
+
+PRs are automatically reviewed by OpenHands using the `pr-review` plugin. Reviews trigger on:
+- Non-draft PR opened
+- PR marked ready for review
+- Label `review-this` added
+- Review requested from `@openhands-agent`
+
+The review uses "roasted" style (direct, Linus-style feedback). Priority labels:
+- 🔴 Critical - Must fix (security, bugs)
+- 🟠 Important - Should fix (logic errors)
+- 🟡 Suggestion - Consider (clarity)
+- 🟢 Nit - Optional (style)
+
+Address Critical/Important issues before merge. For re-review after changes, add `review-this` label.
+
 
 ## Security & Configuration Tips
 - Do not embed API keys or endpoints in code; rely on runtime configuration/env vars when integrating new services.

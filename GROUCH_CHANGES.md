@@ -50,6 +50,7 @@ open-grouch/
 | `openhands_cli/acp_impl/utils/resources.py` | Cache directory path | Low | Default to `~/.open-grouch/cache/acp` |
 | `openhands_cli/mcp/mcp_commands.py` | User messages | Low | Reference `~/.open-grouch` and `grouch` command |
 | `openhands_cli/tui/panels/mcp_side_panel.py` | User messages | Low | Reference `~/.open-grouch` |
+| `openhands_cli/argparsers/main_parser.py` | Import grouch strings | Low | Use `PRODUCT_NAME` from `grouch/strings.py` for `--version` output |
 | `openhands_cli/acp_impl/agent/local_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
 | `openhands_cli/acp_impl/agent/remote_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
 | `openhands_cli/setup.py` | Comment only | Very Low | Reference `~/.open-grouch` in comment |

@@ -388,7 +388,7 @@ def test_version_flag(monkeypatch, capsys, argv):
 
     # Check that version string is in the output
     captured = capsys.readouterr()
-    assert "OpenHands CLI" in captured.out
+    assert "Open Grouch" in captured.out
     # Should contain a version number (matches format like 1.2.1 or 0.0.0)
     import re
 

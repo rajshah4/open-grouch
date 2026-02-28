@@ -2,6 +2,7 @@
 
 import argparse
 
+from grouch.strings import PRODUCT_NAME
 from openhands_cli import __version__
 from openhands_cli.argparsers.acp_parser import add_acp_parser
 from openhands_cli.argparsers.auth_parser import add_login_parser, add_logout_parser
@@ -57,7 +58,7 @@ def create_main_parser() -> argparse.ArgumentParser:
         "--version",
         "-v",
         action="version",
-        version=f"OpenHands CLI {__version__}",
+        version=f"{PRODUCT_NAME} {__version__}",
         help="Show the version number and exit",
     )
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.1...open-grouch-v0.1.2) (2026-02-28)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** prevent docs, chore, style, refactor, test, ci commits from triggering releases ([57a32ec](https://github.com/jpshackelford/open-grouch/commit/57a32ecb6a20a1bc7902fa3c7c7f796f65c42320))
+* **ci:** prevent docs, chore, style, refactor, test, ci commits from triggering releases ([6389e3b](https://github.com/jpshackelford/open-grouch/commit/6389e3b22c3b13b9b9e95faa2b5bd3499e2ad69e))
+* **ci:** use OpenHands LLM proxy for PR reviews ([303fdf3](https://github.com/jpshackelford/open-grouch/commit/303fdf3832187297cd31df27ab9a21e2c800dc44))
+* **ci:** use ubuntu-24.04 for PR review workflow ([95d5c34](https://github.com/jpshackelford/open-grouch/commit/95d5c34d659ea741a5f11b3e8c7065b126271125))
+* update splash screen to display Open Grouch branding and version ([599d08b](https://github.com/jpshackelford/open-grouch/commit/599d08bc4f886bc6d4a641bd4cdee836ad5796c9))
+* update splash screen to display Open Grouch branding and version ([8d3cf0e](https://github.com/jpshackelford/open-grouch/commit/8d3cf0e7cfa3fc1996a98214dbdf450ebcaca5fe))
+
 ## [0.1.1](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.0...open-grouch-v0.1.1) (2026-02-25)
 
 

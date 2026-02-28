@@ -30,6 +30,7 @@ open-grouch/
 |------|---------|
 | `grouch/__init__.py` | Package initialization |
 | `grouch/strings.py` | All personality text (banners, messages, responses) |
+| `grouch/personality.py` | Oscar the Grouch personality for agent system prompt |
 | `grouch/theme.py` | Trash can green color theme |
 | `.github/workflows/upstream-sync.yml` | Automated upstream tracking |
 | `GROUCH_CHANGES.md` | This documentation |
@@ -42,11 +43,13 @@ open-grouch/
 | `README.md` | Complete replacement | None | Use `.gitattributes` merge=ours |
 | `openhands_cli/__init__.py` | Package version source | Low | Get version from `open-grouch` package instead of `openhands` |
 | `openhands_cli/theme.py` | Import grouch theme | Low | Simple import swap |
-| `openhands_cli/tui/content/splash.py` | Import grouch strings, rename function | Medium | Use `GROUCH_BANNER` from `grouch/strings.py`, display "Open Grouch" in version |
+| `openhands_cli/tui/content/splash.py` | Import grouch strings, rename function | Medium | Use `GROUCH_BANNER` and grouchy instructions from `grouch/strings.py` |
 | `openhands_cli/tui/widgets/status_line.py` | Import grouch strings | Low | Status messages |
 | `openhands_cli/version_check.py` | PyPI package name | Low | Check `open-grouch` on PyPI instead of `openhands` |
 | `openhands_cli/locations.py` | Config directory path | Low | Default to `~/.open-grouch` instead of `~/.openhands` |
 | `openhands_cli/stores/cli_settings.py` | Config directory path, critic default | Low | Default to `~/.open-grouch`; critic disabled by default (upstream has it enabled) |
+| `openhands_cli/stores/cli_settings.py` | Config directory path | Low | Default to `~/.open-grouch` |
+| `openhands_cli/stores/agent_store.py` | Import grouch personality | Medium | Add Oscar the Grouch personality to system prompt |
 | `openhands_cli/acp_impl/utils/resources.py` | Cache directory path | Low | Default to `~/.open-grouch/cache/acp` |
 | `openhands_cli/mcp/mcp_commands.py` | User messages | Low | Reference `~/.open-grouch` and `grouch` command |
 | `openhands_cli/tui/panels/mcp_side_panel.py` | User messages | Low | Reference `~/.open-grouch` |

@@ -23,7 +23,7 @@ DEFAULT_MAX_REFINEMENT_ITERATIONS = 3
 class CriticSettings(BaseModel):
     """Model for critic-related settings."""
 
-    enable_critic: bool = True
+    enable_critic: bool = False
     enable_iterative_refinement: bool = False
     critic_threshold: float = DEFAULT_CRITIC_THRESHOLD
     issue_threshold: float = DEFAULT_ISSUE_THRESHOLD

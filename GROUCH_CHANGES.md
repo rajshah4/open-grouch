@@ -47,7 +47,7 @@ open-grouch/
 | `openhands_cli/tui/widgets/status_line.py` | Import grouch strings | Low | Status messages |
 | `openhands_cli/version_check.py` | PyPI package name | Low | Check `open-grouch` on PyPI instead of `openhands` |
 | `openhands_cli/locations.py` | Config directory path | Low | Default to `~/.open-grouch` instead of `~/.openhands` |
-| `openhands_cli/stores/cli_settings.py` | Config directory path | Low | Default to `~/.open-grouch` |
+| `openhands_cli/stores/cli_settings.py` | Config directory path, critic default | Low | Default to `~/.open-grouch`; critic disabled by default (upstream has it enabled) |
 | `openhands_cli/stores/agent_store.py` | Import grouch personality | Medium | Add Oscar the Grouch personality to system prompt |
 | `openhands_cli/acp_impl/utils/resources.py` | Cache directory path | Low | Default to `~/.open-grouch/cache/acp` |
 | `openhands_cli/mcp/mcp_commands.py` | User messages | Low | Reference `~/.open-grouch` and `grouch` command |

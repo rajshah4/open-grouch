@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
 import pytest
+import pytest_textual_snapshot
 from syrupy.extensions.single_file import SingleFileSnapshotExtension, WriteMode
 
 # Make splash header deterministic for snapshot tests by patching
@@ -37,19 +38,11 @@ def normalize_svg(svg: str) -> str:
     return re.sub(r"\bterminal-\d+-([\w-]+)", r"terminal-\1", svg)
 
 
-def normalize_svg_colors(svg: str) -> str:
+def normalize_svg_with_colors(svg: str) -> str:
     """Normalize SVG by remapping color classes to be deterministic.
 
-    The Rich library assigns colors to CSS classes in the order they are
-    first encountered during rendering. This order can vary between
-    environments (local vs CI) due to differences in rendering order.
-
-    This function:
-    1. Strips the unique ID prefix (like normalize_svg)
-    2. Extracts all color definitions and their class names
-    3. Remaps class names based on sorted color values for determinism
-    4. Updates all references to use the new class names
-    5. Sorts the CSS definitions for consistent ordering
+    This combines normalize_svg (ID stripping) with color class remapping
+    to produce deterministic SVG output across different environments.
     """
     # First, strip the unique ID prefix
     svg = normalize_svg(svg)
@@ -79,34 +72,37 @@ def normalize_svg_colors(svg: str) -> str:
         class_mapping[old_num] = str(new_num)
         new_class_defs.append(f".terminal-r{new_num} {{ fill: {color}{extra} }}")
 
-    # Remove old class definitions and insert new sorted ones
+    # Remove old class definitions
     def remove_class_defs(match):
         return ""
 
     svg = re.sub(color_pattern, remove_class_defs, svg)
 
-    # Find where to insert the new class definitions
-    style_match = re.search(r"(<style[^>]*>.*?)(</style>)", svg, re.DOTALL)
-    if style_match:
-        style_content = style_match.group(1)
-        style_end = style_match.group(2)
+    # Insert new sorted class definitions
+    style_close_pattern = r"(</style>)"
 
-        # Insert the new class definitions before </style>
-        new_class_block = "\n    " + "\n".join(new_class_defs) + "\n    "
-        svg = svg.replace(
-            style_match.group(0), style_content + new_class_block + style_end
-        )
+    def insert_new_defs(match):
+        return "\n".join(new_class_defs) + "\n    " + match.group(1)
 
-    # Replace class references in the SVG content
-    # Match class="terminal-rN" or class="terminal-XXXXX-rN"
-    def replace_class_ref(match):
+    svg = re.sub(style_close_pattern, insert_new_defs, svg, count=1)
+
+    # Update all class references in the SVG
+    def replace_class_refs(match):
         old_num = match.group(1)
         new_num = class_mapping.get(old_num, old_num)
-        return f'class="terminal-r{new_num}"'
+        return f"terminal-r{new_num}"
 
-    svg = re.sub(r'class="terminal-r(\d+)"', replace_class_ref, svg)
+    svg = re.sub(r"terminal-r(\d+)", replace_class_refs, svg)
 
     return svg
+
+
+# Patch pytest-textual-snapshot to use our color-normalized SVG function
+# This ensures deterministic snapshots across different environments
+pytest_textual_snapshot.normalize_svg = normalize_svg_with_colors
+
+# Alias for backward compatibility with ColorNormalizedSVGExtension below
+normalize_svg_colors = normalize_svg_with_colors
 
 
 class ColorNormalizedSVGExtension(SingleFileSnapshotExtension):

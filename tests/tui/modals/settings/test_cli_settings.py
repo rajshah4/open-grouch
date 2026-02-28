@@ -89,7 +89,7 @@ class TestCliSettings:
         cfg = CliSettings()
         assert cfg.default_cells_expanded is False
         assert cfg.auto_open_plan_panel is True
-        assert cfg.critic.enable_critic is True
+        assert cfg.critic.enable_critic is False  # Grouch has critic disabled by default
         assert cfg.critic.enable_iterative_refinement is False
         assert cfg.critic.critic_threshold == 0.6
         assert cfg.critic.issue_threshold == 0.75
@@ -306,7 +306,7 @@ class TestCliSettingsMigration:
 
         # Should migrate critic_threshold and use default for enable_critic
         assert cfg.critic.critic_threshold == 0.4
-        assert cfg.critic.enable_critic is True  # Default value
+        assert cfg.critic.enable_critic is False  # Default value (Grouch has critic disabled)
 
     def test_migration_preserves_other_settings(self, tmp_path: Path):
         """Test that migration preserves non-critic settings."""

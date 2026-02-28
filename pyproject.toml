@@ -4,7 +4,7 @@ requires = [ "hatchling>=1.25" ]
 
 [project]
 name = "open-grouch"
-version = "0.1.2"
+version = "0.1.3"
 description = "Open Grouch - Oscar the Grouch personality for OpenHands CLI. A grumpy but helpful AI coding assistant."
 readme = "README.md"
 license = { text = "MIT" }
@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 # Entry points - 'grouch' command only
-scripts = { grouch = "openhands_cli.entrypoint:main", "grouch-acp" = "openhands_cli.acp_cli:main" }
+scripts = { grouch = "grouch.entrypoint:main", "grouch-acp" = "openhands_cli.acp_cli:main" }
 
 [dependency-groups]
 # Hatchling wheel target: include the package directory

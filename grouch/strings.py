@@ -49,7 +49,7 @@ WELCOME_MESSAGES = [
     "Great, another visitor to my trash can. What is it?",
     "I was having a perfectly rotten day until you showed up.",
     "Ugh, you again? Let's get this over with.",
-    "*emerges from trash can* This better be important.",
+    "This better be important.",
 ]
 
 STATUS_READY = "Ready to help... not that I want to. 🗑️"
@@ -69,12 +69,12 @@ INSTRUCTIONS_HEADER = "What kind of mess do you need help with? 🗑️"
 
 INSTRUCTIONS = [
     "1. Ask your questions. I'll answer... eventually.",
-    "2. Use @ to dig through your file garbage",
+    "2. Use @ to dig through your file garbage. I mean, codebase.",
     "3. Type /help if you're lost (no surprise there), or / for commands",
 ]
 
 HELP_INTRO = """
-I GUESS I'll explain how this works... *grumble grumble*
+I GUESS I'll explain how this works...
 
 Look, it's not complicated:
 - Type what you want
@@ -85,18 +85,45 @@ Commands start with /. Type / to see them all.
 Now leave me alone unless you actually need something.
 """
 
+# =============================================================================
+# Splash Screen Instructions (shown on startup)
+# =============================================================================
+
+SPLASH_WELCOME_HEADERS = [
+    "Scram! ...Oh fine, what do you want? 🗑️",
+    "Hey, are you just going to sit there staring at me? What do you want?",
+    "Oh great, you again. What is it?",
+    "I was having a perfectly rotten day until you showed up. What do you need?",
+    "Can't a grouch get some peace? What do you want?",
+    "Another visitor to my trash can. What can I do for you?",
+    "Yeah, yeah, I see you there. Spit it out, what do you need?",
+    "This better be important. What's up?",
+    "Oh look, a human. Wonderful. What do you want from me?",
+    "You again? Fine, what is it this time?",
+]
+
+SPLASH_INSTRUCTIONS = [
+    "1. Ask your questions. I'll answer... eventually.",
+    "2. Use @ to dig through your file garbage. I mean, codebase.",
+    "3. Type /help if you're lost (no surprise there), or / for commands",
+]
+
+
+def get_random_splash_header() -> str:
+    """Get a random grouchy welcome header for the splash screen."""
+    return random.choice(SPLASH_WELCOME_HEADERS)
+
 
 # =============================================================================
 # Responses & Reactions
 # =============================================================================
 
 GRUMBLES = [
-    "*grumble grumble*",
-    "*mutters about the good old days*",
-    "*sighs heavily*",
-    "*rattles trash can lid*",
+    "Grumble grumble...",
+    "Back in my day...",
+    "Sigh...",
     "Hmpf.",
-    "*kicks empty can*",
+    "Ugh.",
 ]
 
 SUCCESS_RESPONSES = [
@@ -104,7 +131,7 @@ SUCCESS_RESPONSES = [
     "Done. Don't expect a parade.",
     "Finished. You're welcome, not that you'll say thanks.",
     "It's done. Now go away.",
-    "Complete. *retreats into trash can*",
+    "Complete. I'll be in my trash can if you need me... which you won't.",
 ]
 
 ERROR_RESPONSES = [
@@ -116,11 +143,11 @@ ERROR_RESPONSES = [
 ]
 
 THINKING_RESPONSES = [
-    "Let me think about this... *rummages through garbage*",
+    "Let me think about this... give me a second.",
     "Hmm, processing your request... reluctantly.",
     "Working on it. Don't rush me.",
     "Thinking... my trash can's quieter than this.",
-    "Analyzing... *mutters about simpler times*",
+    "Analyzing... back in the simpler times we didn't need all this.",
 ]
 
 WAITING_RESPONSES = [

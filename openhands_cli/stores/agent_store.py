@@ -379,9 +379,15 @@ class AgentStore:
         )
 
     def _build_agent_context(self) -> AgentContext:
+        from grouch.personality import get_personality_instructions
+
         skills = load_project_skills(get_work_dir())
+
+        # Build system suffix with grouch personality + context
         system_suffix = "\n".join(
             [
+                get_personality_instructions(),
+                "",
                 f"Your current working directory is: {get_work_dir()}",
                 f"User operating system: {get_os_description()}",
             ]

@@ -54,21 +54,18 @@ class TestGetSplashContent:
             assert "version" in content
             assert "Open Grouch v1.0.0" in content["version"]
             assert "status_text" in content
-            assert "All set up!" in content["status_text"]
+            # Grouch has grouchy status text
+            assert "Ready to help" in content["status_text"]
             assert "instructions_header" in content
-            assert "What do you want to build?" in content["instructions_header"]
+            # Grouch has grouchy instructions header (randomly selected)
+            # Just verify it contains some text with color markup
+            assert len(content["instructions_header"]) > 10
+            assert "[" in content["instructions_header"]  # Has Rich markup
             assert "instructions" in content
-            assert (
-                "1. Ask questions, edit files, or run commands."
-                in content["instructions"][0]
-            )
-            assert (
-                "2. Use @ to look up a file in the folder structure"
-                in content["instructions"][1]
-            )
-            # Verify /help and /feedback are mentioned in instructions
+            # Grouch has grouchy instructions with @ file reference
+            assert "@" in content["instructions"][1]
+            # Verify /help is mentioned in instructions
             assert "/help" in content["instructions"][2]
-            assert "/feedback" in content["instructions"][2]
 
             # Should contain conversation ID
             assert "conversation_text" in content

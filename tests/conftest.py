@@ -1,4 +1,3 @@
-import random
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -8,10 +7,6 @@ from pydantic import SecretStr
 from openhands.sdk import LLM, Agent
 from openhands_cli.locations import AGENT_SETTINGS_PATH
 from openhands_cli.utils import get_default_cli_agent
-
-
-# Seed random for deterministic tests (especially for grouchy welcome headers)
-random.seed(42)
 
 
 @dataclass

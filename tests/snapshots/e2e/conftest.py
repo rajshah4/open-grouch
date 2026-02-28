@@ -12,13 +12,24 @@ from collections.abc import Generator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
+from unittest import mock
 
 import pytest
 from syrupy.extensions.single_file import SingleFileSnapshotExtension, WriteMode
 
+from grouch.strings import SPLASH_WELCOME_HEADERS
 from tests.conftest import create_test_agent_config
 from tui_e2e.mock_llm_server import MockLLMServer
 from tui_e2e.trajectory import get_trajectories_dir, load_trajectory
+
+
+# Mock get_random_splash_header for deterministic snapshots
+# Patch where it's imported (splash.py), not where it's defined
+_splash_header_patch = mock.patch(
+    "openhands_cli.tui.content.splash.get_random_splash_header",
+    return_value=SPLASH_WELCOME_HEADERS[0],
+)
+_splash_header_patch.start()
 
 
 if TYPE_CHECKING:

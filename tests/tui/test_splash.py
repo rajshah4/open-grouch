@@ -4,31 +4,31 @@ import unittest.mock as mock
 
 from openhands_cli.theme import OPENHANDS_THEME
 from openhands_cli.tui.content.splash import (
-    get_openhands_banner,
+    get_grouch_banner,
     get_splash_content,
 )
 from openhands_cli.version_check import VersionInfo
 
 
-class TestGetOpenHandsBanner:
-    """Tests for get_openhands_banner function."""
+class TestGetGrouchBanner:
+    """Tests for get_grouch_banner function."""
 
-    def test_banner_contains_openhands_text(self):
-        """Test that banner contains OpenHands ASCII art."""
-        banner = get_openhands_banner()
+    def test_banner_contains_grouch_text(self):
+        """Test that banner contains Open Grouch ASCII art."""
+        banner = get_grouch_banner()
 
         # Check that it's a string
         assert isinstance(banner, str)
 
         # Check that it contains key elements of the ASCII art
         assert "___" in banner
-        assert "OpenHands" in banner or "_ __" in banner  # ASCII art representation
+        assert "Grouch" in banner or "_ __" in banner  # ASCII art representation
         assert "\n" in banner  # Multi-line
 
     def test_banner_is_consistent(self):
         """Test that banner is consistent across calls."""
-        banner1 = get_openhands_banner()
-        banner2 = get_openhands_banner()
+        banner1 = get_grouch_banner()
+        banner2 = get_grouch_banner()
         assert banner1 == banner2
 
 
@@ -52,7 +52,7 @@ class TestGetSplashContent:
             # Check basic structure
             assert isinstance(content, dict)
             assert "version" in content
-            assert "OpenHands CLI v1.0.0" in content["version"]
+            assert "Open Grouch v1.0.0" in content["version"]
             assert "status_text" in content
             assert "All set up!" in content["status_text"]
             assert "instructions_header" in content
@@ -113,7 +113,7 @@ class TestGetSplashContent:
             assert isinstance(content["instructions"], list)
 
     def test_splash_content_includes_banner(self):
-        """Test that splash content includes the OpenHands banner."""
+        """Test that splash content includes the Open Grouch banner."""
         with mock.patch(
             "openhands_cli.tui.content.splash.check_for_updates"
         ) as mock_check:
@@ -128,7 +128,7 @@ class TestGetSplashContent:
 
             # Should include banner elements
             banner = content["banner"]
-            assert "OpenHands" in banner or "_ __" in banner
+            assert "Grouch" in banner or "_ __" in banner
             assert "___" in banner
 
     def test_splash_content_with_colors(self):

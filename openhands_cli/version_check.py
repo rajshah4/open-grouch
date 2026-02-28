@@ -1,4 +1,4 @@
-"""Version checking utilities for OpenHands CLI."""
+"""Version checking utilities for Open Grouch."""
 
 import json
 import urllib.request
@@ -50,9 +50,9 @@ def check_for_updates(timeout: float = 2.0) -> VersionInfo:
 
     try:
         # Fetch latest version from PyPI
-        url = "https://pypi.org/pypi/openhands/json"
+        url = "https://pypi.org/pypi/open-grouch/json"
         req = urllib.request.Request(url)
-        req.add_header("User-Agent", f"openhands-cli/{current}")
+        req.add_header("User-Agent", f"open-grouch/{current}")
 
         with urllib.request.urlopen(req, timeout=timeout) as response:
             data = json.loads(response.read().decode("utf-8"))

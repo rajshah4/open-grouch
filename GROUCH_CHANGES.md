@@ -40,9 +40,11 @@ open-grouch/
 |------|-------------|---------------|-------|
 | `pyproject.toml` | Package rename, metadata | Low | Change name, description, entry points |
 | `README.md` | Complete replacement | None | Use `.gitattributes` merge=ours |
+| `openhands_cli/__init__.py` | Package version source | Low | Get version from `open-grouch` package instead of `openhands` |
 | `openhands_cli/theme.py` | Import grouch theme | Low | Simple import swap |
-| `openhands_cli/tui/content/splash.py` | Import grouch strings | Low | Banner and welcome messages |
+| `openhands_cli/tui/content/splash.py` | Import grouch strings, rename function | Medium | Use `GROUCH_BANNER` from `grouch/strings.py`, display "Open Grouch" in version |
 | `openhands_cli/tui/widgets/status_line.py` | Import grouch strings | Low | Status messages |
+| `openhands_cli/version_check.py` | PyPI package name | Low | Check `open-grouch` on PyPI instead of `openhands` |
 | `openhands_cli/locations.py` | Config directory path | Low | Default to `~/.open-grouch` instead of `~/.openhands` |
 | `openhands_cli/stores/cli_settings.py` | Config directory path | Low | Default to `~/.open-grouch` |
 | `openhands_cli/acp_impl/utils/resources.py` | Cache directory path | Low | Default to `~/.open-grouch/cache/acp` |
@@ -51,6 +53,7 @@ open-grouch/
 | `openhands_cli/acp_impl/agent/local_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
 | `openhands_cli/acp_impl/agent/remote_agent.py` | User messages, comments | Low | Reference `~/.open-grouch` |
 | `openhands_cli/setup.py` | Comment only | Very Low | Reference `~/.open-grouch` in comment |
+| `tests/tui/test_splash.py` | Test updates | Low | Updated to test `get_grouch_banner()` and "Open Grouch" version string |
 
 ### Files to Watch
 

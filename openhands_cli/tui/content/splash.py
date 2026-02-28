@@ -2,7 +2,7 @@
 
 from textual.theme import Theme
 
-from grouch.strings import GROUCH_BANNER
+from grouch.strings import GROUCH_BANNER, SPLASH_INSTRUCTIONS, get_random_splash_header
 from openhands_cli.version_check import check_for_updates
 
 
@@ -58,22 +58,15 @@ def get_splash_content(
     # Get version information
     version_info = check_for_updates()
 
-    # Create structured content as dictionary
+    # Create structured content as dictionary - use grouchy instructions
     content = {
         "banner": banner,
         "version": f"Open Grouch v{version_info.current_version}",
-        "status_text": "All set up!",
+        "status_text": "Ready to help... not that I want to. 🗑️",
         "conversation_text": get_conversation_text(conversation_id, theme=theme),
         "conversation_id": conversation_id,
-        "instructions_header": f"[{primary_color}]What do you want to build?[/]",
-        "instructions": [
-            "1. Ask questions, edit files, or run commands.",
-            "2. Use @ to look up a file in the folder structure",
-            (
-                "3. Type /help for help, /feedback to leave anonymous feedback, "
-                "or / to scroll through available commands"
-            ),
-        ],
+        "instructions_header": f"[{primary_color}]{get_random_splash_header()}[/]",
+        "instructions": SPLASH_INSTRUCTIONS,
         "update_notice": None,
         "critic_notice": None,
     }

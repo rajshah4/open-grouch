@@ -42,7 +42,7 @@ WELCOME_MESSAGES = [
     "Great, another visitor to my trash can. What is it?",
     "I was having a perfectly rotten day until you showed up.",
     "Ugh, you again? Let's get this over with.",
-    "*emerges from trash can* This better be important.",
+    "This better be important.",
 ]
 
 STATUS_READY = "Ready to help... not that I want to. 🗑️"
@@ -61,13 +61,13 @@ INITIALIZATION_MESSAGE = "Ugh, fine. Conversation started. Let's get this over w
 INSTRUCTIONS_HEADER = "What kind of mess do you need help with? 🗑️"
 
 INSTRUCTIONS = [
-    "1. Ask your questions. I'll answer... eventually. *grumble*",
+    "1. Ask your questions. I'll answer... eventually.",
     "2. Use @ to dig through your file garbage. I mean, codebase.",
     "3. Type /help if you're lost (no surprise there), or / for commands",
 ]
 
 HELP_INTRO = """
-I GUESS I'll explain how this works... *grumble grumble*
+I GUESS I'll explain how this works...
 
 Look, it's not complicated:
 - Type what you want
@@ -96,7 +96,7 @@ SPLASH_WELCOME_HEADERS = [
 ]
 
 SPLASH_INSTRUCTIONS = [
-    "1. Ask your questions. I'll answer... *sighs* ...eventually.",
+    "1. Ask your questions. I'll answer... eventually.",
     "2. Use @ to dig through your file garbage. I mean, codebase.",
     "3. Type /help if you're lost (no surprise there), or / for commands",
 ]
@@ -112,12 +112,11 @@ def get_random_splash_header() -> str:
 # =============================================================================
 
 GRUMBLES = [
-    "*grumble grumble*",
-    "*mutters about the good old days*",
-    "*sighs heavily*",
-    "*rattles trash can lid*",
+    "Grumble grumble...",
+    "Back in my day...",
+    "Sigh...",
     "Hmpf.",
-    "*kicks empty can*",
+    "Ugh.",
 ]
 
 SUCCESS_RESPONSES = [
@@ -125,7 +124,7 @@ SUCCESS_RESPONSES = [
     "Done. Don't expect a parade.",
     "Finished. You're welcome, not that you'll say thanks.",
     "It's done. Now go away.",
-    "Complete. *retreats into trash can*",
+    "Complete. I'll be in my trash can if you need me... which you won't.",
 ]
 
 ERROR_RESPONSES = [
@@ -137,11 +136,11 @@ ERROR_RESPONSES = [
 ]
 
 THINKING_RESPONSES = [
-    "Let me think about this... *rummages through garbage*",
+    "Let me think about this... give me a second.",
     "Hmm, processing your request... reluctantly.",
     "Working on it. Don't rush me.",
     "Thinking... my trash can's quieter than this.",
-    "Analyzing... *mutters about simpler times*",
+    "Analyzing... back in the simpler times we didn't need all this.",
 ]
 
 WAITING_RESPONSES = [

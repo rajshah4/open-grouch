@@ -1,9 +1,9 @@
-"""OpenHands package."""
+"""Open Grouch package."""
 
 from importlib.metadata import PackageNotFoundError, version
 
 
 try:
-    __version__ = version("openhands")
+    __version__ = version("open-grouch")
 except PackageNotFoundError:
     __version__ = "0.0.0"

@@ -1,7 +1,8 @@
-"""Welcome message utilities for OpenHands CLI textual app."""
+"""Welcome message utilities for Open Grouch textual app."""
 
 from textual.theme import Theme
 
+from grouch.strings import GROUCH_BANNER
 from openhands_cli.version_check import check_for_updates
 
 
@@ -18,17 +19,11 @@ def get_conversation_text(conversation_id: str, *, theme: Theme) -> str:
     return f"[{theme.accent}]Initialized conversation[/] {conversation_id}"
 
 
-def get_openhands_banner() -> str:
-    """Get the OpenHands ASCII art banner."""
-    # ASCII art with consistent line lengths for proper alignment
-    banner_lines = [
-        r"     ___                    _   _                 _     ",
-        r"    /  _ \ _ __   ___ _ __ | | | | __ _ _ __   __| |___",
-        r"    | | | | '_ \ / _ \ '_ \| |_| |/ _` | '_ \ / _` / __|",
-        r"    | |_| | |_) |  __/ | | |  _  | (_| | | | | (_| \__ \ ",
-        r"    \___ /| .__/ \___|_| |_|_| |_|\__,_|_| |_|\__,_|___/",
-        r"          |_|                                           ",
-    ]
+def get_grouch_banner() -> str:
+    """Get the Open Grouch ASCII art banner."""
+    # Strip leading/trailing newlines but preserve internal structure
+    banner = GROUCH_BANNER.strip("\n")
+    banner_lines = banner.split("\n")
 
     # Find the maximum line length
     max_length = max(len(line) for line in banner_lines)
@@ -56,7 +51,7 @@ def get_splash_content(
     primary_color = theme.primary
 
     # Use Rich markup for colored banner (apply color to each line)
-    banner_lines = get_openhands_banner().split("\n")
+    banner_lines = get_grouch_banner().split("\n")
     colored_banner_lines = [f"[{primary_color}]{line}[/]" for line in banner_lines]
     banner = "\n".join(colored_banner_lines)
 
@@ -66,7 +61,7 @@ def get_splash_content(
     # Create structured content as dictionary
     content = {
         "banner": banner,
-        "version": f"OpenHands CLI v{version_info.current_version}",
+        "version": f"Open Grouch v{version_info.current_version}",
         "status_text": "All set up!",
         "conversation_text": get_conversation_text(conversation_id, theme=theme),
         "conversation_id": conversation_id,
@@ -87,7 +82,7 @@ def get_splash_content(
     if version_info.needs_update and version_info.latest_version:
         content["update_notice"] = (
             f"[{primary_color}]⚠ Update available: {version_info.latest_version}[/]\n"
-            "Run 'uv tool upgrade openhands' to update"
+            "Run 'uv tool upgrade open-grouch' to update"
         )
 
     # Add critic notification if enabled

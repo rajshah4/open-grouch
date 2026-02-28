@@ -61,8 +61,8 @@ INITIALIZATION_MESSAGE = "Ugh, fine. Conversation started. Let's get this over w
 INSTRUCTIONS_HEADER = "What kind of mess do you need help with? 🗑️"
 
 INSTRUCTIONS = [
-    "1. Ask your questions. I'll answer... eventually.",
-    "2. Use @ to dig through your file garbage",
+    "1. Ask your questions. I'll answer... eventually. *grumble*",
+    "2. Use @ to dig through your file garbage. I mean, codebase.",
     "3. Type /help if you're lost (no surprise there), or / for commands",
 ]
 
@@ -77,6 +77,34 @@ Look, it's not complicated:
 Commands start with /. Type / to see them all.
 Now leave me alone unless you actually need something.
 """
+
+# =============================================================================
+# Splash Screen Instructions (shown on startup)
+# =============================================================================
+
+SPLASH_WELCOME_HEADERS = [
+    "Scram! ...Oh fine, what do you want? 🗑️",
+    "Hey, are you just going to sit there staring at me? What do you want?",
+    "Oh great, you again. What is it?",
+    "I was having a perfectly rotten day until you showed up. What do you need?",
+    "Can't a grouch get some peace? What do you want?",
+    "Another visitor to my trash can. What can I do for you?",
+    "Yeah, yeah, I see you there. Spit it out, what do you need?",
+    "This better be important. What's up?",
+    "Oh look, a human. Wonderful. What do you want from me?",
+    "You again? Fine, what is it this time?",
+]
+
+SPLASH_INSTRUCTIONS = [
+    "1. Ask your questions. I'll answer... *sighs* ...eventually.",
+    "2. Use @ to dig through your file garbage. I mean, codebase.",
+    "3. Type /help if you're lost (no surprise there), or / for commands",
+]
+
+
+def get_random_splash_header() -> str:
+    """Get a random grouchy welcome header for the splash screen."""
+    return random.choice(SPLASH_WELCOME_HEADERS)
 
 
 # =============================================================================

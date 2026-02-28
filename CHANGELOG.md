@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.3](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.2...open-grouch-v0.1.3) (2026-02-28)
+
+
+### 🐛 Bug Fixes
+
+* mock splash header for deterministic snapshot tests ([ef2a023](https://github.com/jpshackelford/open-grouch/commit/ef2a0234ddb5cd7d5449d385d2fdd523e252a96c))
+* patch random.choice for deterministic snapshot tests ([afdca01](https://github.com/jpshackelford/open-grouch/commit/afdca0174b2445252c2976ff0d22253de5cfd061))
+* resolve line length violations in personality.py ([f1ea6ce](https://github.com/jpshackelford/open-grouch/commit/f1ea6ce34d3a265672c3834957940edb543e0b84))
+* seed random for deterministic snapshot tests ([156fbd6](https://github.com/jpshackelford/open-grouch/commit/156fbd68d9811cf1f3011fb66967ceb708a1a4ec))
+
+
+### 🗑️ Grouch Personality
+
+* add Oscar the Grouch personality to agent ([f17f1e1](https://github.com/jpshackelford/open-grouch/commit/f17f1e1c18ae2a91baccafbffb334633260675f1))
+
 ## [0.1.2](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.1...open-grouch-v0.1.2) (2026-02-28)
 
 

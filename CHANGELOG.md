@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.4](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.3...open-grouch-v0.1.4) (2026-02-28)
+
+
+### 🐛 Bug Fixes
+
+* display 'Open Grouch' in --version output instead of 'OpenHands CLI' ([3644346](https://github.com/jpshackelford/open-grouch/commit/36443460af5484562b0b5872efe311f23aa57c26))
+* **test:** patch pytest-textual-snapshot for deterministic color normalization ([6c2d586](https://github.com/jpshackelford/open-grouch/commit/6c2d58606eef1627082390de2ae1261c2df2631a))
+
+
+### 🗑️ Grouch Personality
+
+* disable critic by default ([7674665](https://github.com/jpshackelford/open-grouch/commit/7674665052329ac0b173799f6b8c76044ccaeeb9))
+
 ## [0.1.3](https://github.com/jpshackelford/open-grouch/compare/open-grouch-v0.1.2...open-grouch-v0.1.3) (2026-02-28)
 
 

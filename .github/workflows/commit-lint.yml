@@ -41,6 +41,7 @@ jobs:
                       release
                       ci
                       deps
+                      main
           # Ensure subject doesn't start with uppercase
                   subjectPattern: ^[a-z].+$
                   subjectPatternError: |

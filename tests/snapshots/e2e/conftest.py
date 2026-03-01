@@ -72,36 +72,36 @@ def normalize_svg_with_colors(svg: str) -> str:
         class_mapping[old_num] = str(new_num)
         new_class_defs.append(f".terminal-r{new_num} {{ fill: {color}{extra} }}")
 
-    # Remove old class definitions
-    def remove_class_defs(match):
-        return ""
+    # Split the SVG into: before style defs, style defs, after style (body)
+    # We need to update body refs BEFORE inserting new defs to avoid
+    # the new defs getting modified
+    style_defs_start = svg.find(".terminal-r")
+    if style_defs_start == -1:
+        return svg
 
-    svg = re.sub(color_pattern, remove_class_defs, svg)
+    style_end = svg.find("</style>")
+    if style_end == -1:
+        return svg
 
-    # Insert new sorted class definitions
-    style_close_pattern = r"(</style>)"
+    before_defs = svg[:style_defs_start]
+    after_style = svg[style_end + len("</style>") :]
 
-    def insert_new_defs(match):
-        return "\n".join(new_class_defs) + "\n    " + match.group(1)
-
-    svg = re.sub(style_close_pattern, insert_new_defs, svg, count=1)
-
-    # Update all class references in the SVG
+    # Update class references in the body (after </style>)
     def replace_class_refs(match):
         old_num = match.group(1)
         new_num = class_mapping.get(old_num, old_num)
         return f"terminal-r{new_num}"
 
-    svg = re.sub(r"terminal-r(\d+)", replace_class_refs, svg)
+    after_style_updated = re.sub(r"terminal-r(\d+)", replace_class_refs, after_style)
+
+    # Reconstruct the SVG with new class definitions
+    new_defs_text = "\n".join(new_class_defs)
+    svg = before_defs + new_defs_text + "\n    </style>" + after_style_updated
 
     return svg
 
 
-# Patch pytest-textual-snapshot to use our color-normalized SVG function
-# This ensures deterministic snapshots across different environments
-pytest_textual_snapshot.normalize_svg = normalize_svg_with_colors
-
-# Alias for backward compatibility with ColorNormalizedSVGExtension below
+# Alias for use in the extension class
 normalize_svg_colors = normalize_svg_with_colors
 
 
@@ -130,6 +130,13 @@ class ColorNormalizedSVGExtension(SingleFileSnapshotExtension):
         if isinstance(data, str):
             return normalize_svg_colors(data)
         return data
+
+
+# Patch pytest-textual-snapshot to use our color-normalized SVG extension
+# The snap_compare fixture directly uses SVGImageExtension, so we must replace it
+# with our ColorNormalizedSVGExtension to ensure deterministic snapshots
+pytest_textual_snapshot.normalize_svg = normalize_svg_with_colors
+pytest_textual_snapshot.SVGImageExtension = ColorNormalizedSVGExtension
 
 
 @pytest.fixture

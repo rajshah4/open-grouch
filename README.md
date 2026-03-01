@@ -124,6 +124,14 @@ Open Grouch tracks [OpenHands/OpenHands-CLI](https://github.com/OpenHands/OpenHa
 
 See [GROUCH_CHANGES.md](./GROUCH_CHANGES.md) for details on what we've modified.
 
+## Forking This Repository
+
+Want to create your own fork of Open Grouch? See [FORKING.md](./FORKING.md) for a complete guide on:
+- Updating package identity
+- Configuring GitHub Actions and secrets
+- Setting up automated PR reviews
+- Installing from your fork
+
 ## Contributing
 
 We use **conventional commits** and **automatic releases**:

@@ -3,13 +3,13 @@ build-backend = "hatchling.build"
 requires = [ "hatchling>=1.25" ]
 
 [project]
-name = "open-grouch"
+name = "open-grouch-raj"
 version = "0.1.4"
 description = "Open Grouch - Oscar the Grouch personality for OpenHands CLI. A grumpy but helpful AI coding assistant."
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
-  { name = "JP Shackelford" },
+  { name = "Rajiv Shah" },
   { name = "OpenHands Team", email = "contact@all-hands.dev" },
 ]
 requires-python = "==3.12.*"

@@ -34,15 +34,15 @@ Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 # Install latest version
-uv tool install git+https://github.com/jpshackelford/open-grouch.git
+uv tool install git+https://github.com/rajshah4/open-grouch.git
 
 # Or install a specific version
-uv tool install git+https://github.com/jpshackelford/open-grouch.git@open-grouch-v0.1.1
+uv tool install git+https://github.com/rajshah4/open-grouch.git@open-grouch-v0.1.1
 ```
 
 ### From Wheel
 
-Download the `.whl` file from the [latest release](https://github.com/jpshackelford/open-grouch/releases/latest):
+Download the `.whl` file from the [latest release](https://github.com/rajshah4/open-grouch/releases/latest):
 
 ```bash
 uv tool install ./open_grouch-0.1.1-py3-none-any.whl
@@ -57,7 +57,7 @@ uv tool upgrade open-grouch
 ### From Source
 
 ```bash
-git clone https://github.com/jpshackelford/open-grouch.git
+git clone https://github.com/rajshah4/open-grouch.git
 cd open-grouch
 uv sync
 uv run grouch
